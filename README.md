@@ -1,8 +1,27 @@
-# Restaurant List
+# 我的餐廳名單
 
-## Feature
-- listing 8 restaurants 
-- search restaurant by name or category
+## 功能
+- 首頁共有8家餐廳資訊 
 
-## Searching
-type the keyword of the restaurant in the search bar
+- 使用者可以在首頁看到所有餐廳與它們的簡單資料，包含：
+  * 餐廳照片
+  * 餐廳名稱
+  * 餐廳分類
+  * 餐廳評分
+
+- 使用者可以再點進去看餐廳的詳細資訊，包含：
+  * 類別
+  * 地址
+  * 電話
+  * 描述
+  * 圖片
+
+- 使用者可以在搜尋欄中使用餐廳名稱或者餐廳類別進行搜尋。
+
+- 可以從詳細資訊中連結至google map
+
+## 開始使用
+- 需事先完成npm還有Node.js的安裝
+- 專案下載完成後輸入npm install
+- 安裝完成後輸入npm run dev
+- 成功啟動的話會於終端機看到：Express is running on http://localhost:3000
