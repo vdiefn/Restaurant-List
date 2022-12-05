@@ -12,7 +12,7 @@ app.use(express.static('public'))
 
 
 app.get('/', (req, res) => {
-  res.render('index', {restaurant: restaurantList.results})
+  res.render('index', {restaurants: restaurantList.results})
 })
 
 app.get('/restaurants/:restaurant_id', (req, res) => {
@@ -27,7 +27,7 @@ app.get('/search/', (req,res) =>{
   const searchResult = restaurantList.results.filter( item => {
     return item.category.toLowerCase().includes(keyword.toLowerCase()) || item.name.toLowerCase().includes(keyword.toLowerCase()) || item.name_en.toLowerCase().includes(keyword.toLowerCase())
   })
-  res.render('index', { restaurant: searchResult })
+  res.render('index', { restaurants: searchResult })
 })
 
 app.listen( port, () => {
