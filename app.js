@@ -68,10 +68,6 @@ app.post('/restaurants', (req,res) => {
 })
 
 //看特定餐廳的detail
-// app.get('/restaurants/:restaurant_id', (req, res) => {
-//   const restaurant = restaurantList.results.find(item => item.id.toString() === req.params.restaurant_id)
-//   res.render('show', {restaurant: restaurant})
-// })
 app.get('/restaurants/:restaurant_id', (req,res) => {
   const restaurant_id = req.params.restaurant_id
   Restaurant.findById(restaurant_id)
@@ -90,6 +86,49 @@ app.get('/search/', (req,res) =>{
   res.render('index', { restaurants: searchResult })
 })
 
+//修改餐廳資訊
+app.get('/restaurants/:restaurant_id/edit', (req,res) => {
+  const restaurant_id = req.params.restaurant_id
+  Restaurant.findById(restaurant_id)
+  .lean()
+  .then((restaurant) => {
+    res.render('edit', {restaurant})
+  })
+  .catch(error => {
+    console.log(error)
+  })
+})
+app.post('/restaurants/:restaurant_id/edit', (req, res) => {
+  const restaurant_id = req.params.restaurant_id
+  const name = req.body.name
+  const name_en = req.body.name_en
+  const category = req.body.category
+  const image = req.body.image
+  const location = req.body.location
+  const phone = req.body.phone
+  const google_map = req.body.google_map
+  const rating = req.body.rating
+  const description = req.body.description
+  Restaurant.findById(restaurant_id)
+  .then(restaurant => {
+    restaurant.name = name
+    restaurant.name_en = name_en
+    restaurant.category = category
+    restaurant.image = image
+    restaurant.location = location
+    restaurant.phone = phone
+    restaurant.google_map = google_map
+    restaurant.rating = rating
+    restaurant.description = description
+    return restaurant.save() 
+  })
+    .then(() => {
+      res.redirect(`/restaurants/${restaurant_id}`)
+    })
+    .catch(error => {
+      console.log(error)
+    })
+})
 
 
 
