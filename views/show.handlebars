@@ -40,7 +40,10 @@
     </div>
     <div class="d-flex justify-content-center mb-2 mt-5 g-2">
       <a href="/restaurants/{{restaurant._id}}/edit" type="button" class="btn btn-outline-success ms-5">Edit</a>
-      <a href="/" type="button" class="btn btn-outline-success ms-5">Back</a>
+      <a href="/" type="button" class="btn btn-outline-success ms-3">Back</a>
+      <form action="/restaurants/{{restaurant._id}}/delete" method="POST" style="display: inline" class="ms-3 ">
+        <button class="btn btn-outline-warning" type="submit">Delete</button>
+      </form>
     </div>
   </div>
 </div>

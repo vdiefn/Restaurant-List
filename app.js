@@ -130,7 +130,20 @@ app.post('/restaurants/:restaurant_id/edit', (req, res) => {
     })
 })
 
-
+//刪除餐廳資料
+app.post('/restaurants/:restaurant_id/delete', (req,res) => {
+  const restaurant_id = req.params.restaurant_id
+  return Restaurant.findById(restaurant_id)
+  .then(restaurant => {
+    restaurant.remove()
+  })
+  .then(() => {
+    res.redirect('/')
+  })
+  .catch(error => {
+    console.log(error)
+  })
+})
 
 
 app.listen( port, () => {
