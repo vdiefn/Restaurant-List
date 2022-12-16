@@ -6,6 +6,7 @@ const restaurantList = require('./restaurant.json')
 const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
 const Restaurant = require('./models/restaurant')
+const methodOverride = require('method-override')
 
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config()
@@ -29,6 +30,7 @@ app.set('view engine', 'handlebars')
 
 app.use(express.static('public'))
 app.use(bodyParser.urlencoded({extended:true}))
+app.use(methodOverride('_method'))
 
 //瀏覽所有餐廳
 app.get('/', (req,res) => {
@@ -41,6 +43,8 @@ app.get('/', (req,res) => {
     console.log(error)
   })
 })
+
+
 
 
 //新增餐廳
@@ -78,15 +82,6 @@ app.get('/restaurants/:restaurant_id', (req,res) => {
   })
 })
 
-//搜尋餐廳
-app.get('/search', (req,res) =>{
-  const keyword = req.query.keyword.trim().toLowerCase()
-  const searchResult = restaurantList.results.filter( item => {
-    return item.category.toLowerCase().includes(keyword.toLowerCase()) || item.name.toLowerCase().includes(keyword.toLowerCase()) || item.name_en.toLowerCase().includes(keyword.toLowerCase())
-  })
-  res.render('index', { restaurants: searchResult })
-})
-
 //修改餐廳資訊
 app.get('/restaurants/:restaurant_id/edit', (req,res) => {
   const restaurant_id = req.params.restaurant_id
@@ -99,7 +94,7 @@ app.get('/restaurants/:restaurant_id/edit', (req,res) => {
     console.log(error)
   })
 })
-app.post('/restaurants/:restaurant_id/edit', (req, res) => {
+app.put('/restaurants/:restaurant_id', (req, res) => {
   const restaurant_id = req.params.restaurant_id
   //解構賦值
   const {name, name_en, category, image, location, phone, google_map, rating, description} = req.body
@@ -124,8 +119,17 @@ app.post('/restaurants/:restaurant_id/edit', (req, res) => {
     })
 })
 
+//搜尋餐廳
+app.get('/search', (req, res) => {
+  const keyword = req.query.keyword.trim().toLowerCase()
+  const searchResult = restaurantList.results.filter(item => {
+    return item.category.toLowerCase().includes(keyword.toLowerCase()) || item.name.toLowerCase().includes(keyword.toLowerCase()) || item.name_en.toLowerCase().includes(keyword.toLowerCase())
+  })
+  res.render('index', { restaurants: searchResult })
+})
+
 //刪除餐廳資料
-app.post('/restaurants/:restaurant_id/delete', (req,res) => {
+app.delete('/restaurants/:restaurant_id', (req,res) => {
   const restaurant_id = req.params.restaurant_id
   return Restaurant.findById(restaurant_id)
   .then(restaurant => {
