@@ -72,13 +72,14 @@ app.get('/restaurants/:restaurant_id', (req,res) => {
   const restaurant_id = req.params.restaurant_id
   Restaurant.findById(restaurant_id)
   .lean()
+  .sort({_id: 'asc'})
   .then((restaurant) =>{
     res.render('show', {restaurant})
   })
 })
 
 //搜尋餐廳
-app.get('/search/', (req,res) =>{
+app.get('/search', (req,res) =>{
   const keyword = req.query.keyword.trim().toLowerCase()
   const searchResult = restaurantList.results.filter( item => {
     return item.category.toLowerCase().includes(keyword.toLowerCase()) || item.name.toLowerCase().includes(keyword.toLowerCase()) || item.name_en.toLowerCase().includes(keyword.toLowerCase())
@@ -100,15 +101,8 @@ app.get('/restaurants/:restaurant_id/edit', (req,res) => {
 })
 app.post('/restaurants/:restaurant_id/edit', (req, res) => {
   const restaurant_id = req.params.restaurant_id
-  const name = req.body.name
-  const name_en = req.body.name_en
-  const category = req.body.category
-  const image = req.body.image
-  const location = req.body.location
-  const phone = req.body.phone
-  const google_map = req.body.google_map
-  const rating = req.body.rating
-  const description = req.body.description
+  //解構賦值
+  const {name, name_en, category, image, location, phone, google_map, rating, description} = req.body
   Restaurant.findById(restaurant_id)
   .then(restaurant => {
     restaurant.name = name
