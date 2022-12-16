@@ -36,6 +36,7 @@ app.use(methodOverride('_method'))
 app.get('/', (req,res) => {
   Restaurant.find()
   .lean()
+  .sort({ _id: 'asc' })
   .then((restaurants) => {
     return res.render('index', {restaurants})
   })
@@ -76,9 +77,11 @@ app.get('/restaurants/:restaurant_id', (req,res) => {
   const restaurant_id = req.params.restaurant_id
   Restaurant.findById(restaurant_id)
   .lean()
-  .sort({_id: 'asc'})
   .then((restaurant) =>{
     res.render('show', {restaurant})
+  })
+  .catch(error => {
+    console.log(error)
   })
 })
 
@@ -121,12 +124,21 @@ app.put('/restaurants/:restaurant_id', (req, res) => {
 
 //搜尋餐廳
 app.get('/search', (req, res) => {
-  const keyword = req.query.keyword.trim().toLowerCase()
-  const searchResult = restaurantList.results.filter(item => {
-    return item.category.toLowerCase().includes(keyword.toLowerCase()) || item.name.toLowerCase().includes(keyword.toLowerCase()) || item.name_en.toLowerCase().includes(keyword.toLowerCase())
+  const keywords = req.query.keywords
+  const keyword = req.query.keywords.trim().toLowerCase()
+  Restaurant.find()
+  .lean()
+  .then(restaurants => {
+    const searchResult = restaurants.filter(item => {
+      return item.category.toLowerCase().includes(keyword.toLowerCase()) || item.name.toLowerCase().includes(keyword.toLowerCase()) || item.name_en.toLowerCase().includes(keyword.toLowerCase())
+    })
+    res.render('index', { restaurants: searchResult, keywords })
   })
-  res.render('index', { restaurants: searchResult })
-})
+  .catch(error => {
+    console.log(error)
+  })
+  })
+  
 
 //刪除餐廳資料
 app.delete('/restaurants/:restaurant_id', (req,res) => {
