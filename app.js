@@ -8,22 +8,8 @@ const bodyParser = require('body-parser')
 const Restaurant = require('./models/restaurant')
 const methodOverride = require('method-override')
 const routes = require('./routes')
+require('./config/mongoose')
 
-if (process.env.NODE_ENV !== 'production') {
-  require('dotenv').config()
-}
-
-mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
-
-const db = mongoose.connection
-
-db.on('error', () => {
-  console.log('mongodb error!')
-})
-
-db.once('open', () => {
-  console.log('mongodb connected')
-})
 
 app.engine('handlebars', exphbs({defaultLayout: 'main'}))
 
