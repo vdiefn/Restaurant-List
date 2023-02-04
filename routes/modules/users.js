@@ -3,6 +3,7 @@ const User = require('../../models/user')
 const passport = require('passport')
 const router = express.Router()
 
+//登入
 router.get('/login', (req, res) => {
   res.render('login')
 })
@@ -12,6 +13,7 @@ router.post('/login', passport.authenticate('local', {
   failureRedirect: '/users/login'
 }))
 
+//註冊
 router.post('/register', (req, res) => {
   const { name, email, password, confirmPassword } = req.body
   User.findOne({ email }).then(user => {
@@ -37,6 +39,12 @@ router.post('/register', (req, res) => {
 
 router.get('/register', (req, res) => {
   res.render('register')
+})
+
+//登出
+router.get('/logout', (req, res) => {
+  req.logout()
+  res.redirect('/users/login')
 })
 
 module.exports = router
