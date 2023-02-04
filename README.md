@@ -36,6 +36,7 @@
 - Passport
 - Passport-local
 - Connect-flash
+- Bcrypt.js
 - Passport-Facebook
 
 ## 開始使用
