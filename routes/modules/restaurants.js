@@ -9,16 +9,9 @@ router.get('/new', (req, res) => {
 })
 
 router.post('/', (req, res) => {
-  const name = req.body.name
-  const name_en = req.body.name_en
-  const category = req.body.category
-  const image = req.body.image
-  const location = req.body.location
-  const phone = req.body.phone
-  const google_map = req.body.google_map
-  const rating = req.body.rating
-  const description = req.body.description
-  return Restaurant.create({ name, name_en, category, image, location, phone, google_map, rating, description })
+  const { name, name_en, category, image, location, phone, google_map, rating, description } = req.body 
+  const userId = req.user._id
+  return Restaurant.create({ name, name_en, category, image, location, phone, google_map, rating, description, userId })
     .then(() => {
       res.redirect('/')
     })
@@ -30,7 +23,8 @@ router.post('/', (req, res) => {
 //看特定餐廳的detail
 router.get('/:restaurant_id', (req, res) => {
   const restaurant_id = req.params.restaurant_id
-  Restaurant.findById(restaurant_id)
+  const userId = req.user._id
+  Restaurant.findOne({ restaurant_id, userId })
     .lean()
     .then((restaurant) => {
       res.render('show', { restaurant })
@@ -54,9 +48,10 @@ router.get('/:restaurant_id/edit', (req, res) => {
 })
 router.put('/:restaurant_id', (req, res) => {
   const restaurant_id = req.params.restaurant_id
+  const userId = req.user._id
   //解構賦值
   const { name, name_en, category, image, location, phone, google_map, rating, description } = req.body
-  Restaurant.findById(restaurant_id)
+  Restaurant.findOne({ restaurant_id, userId} )
     .then(restaurant => {
       restaurant.name = name
       restaurant.name_en = name_en
@@ -81,7 +76,8 @@ router.put('/:restaurant_id', (req, res) => {
 //刪除餐廳資料
 router.delete('/:restaurant_id', (req, res) => {
   const restaurant_id = req.params.restaurant_id
-  return Restaurant.findById(restaurant_id)
+  const userId = req.user._id
+  return Restaurant.findOne({ restaurant_id, userId })
     .then(restaurant => {
       restaurant.remove()
     })
