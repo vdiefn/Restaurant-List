@@ -21,10 +21,10 @@ router.post('/', (req, res) => {
 })
 
 //看特定餐廳的detail
-router.get('/:restaurant_id', (req, res) => {
-  const restaurant_id = req.params.restaurant_id
+router.get('/:id', (req, res) => {
+  const _id = req.params.id
   const userId = req.user._id
-  Restaurant.findOne({ restaurant_id, userId })
+  Restaurant.findOne({ _id, userId })
     .lean()
     .then((restaurant) => {
       res.render('show', { restaurant })
@@ -35,9 +35,10 @@ router.get('/:restaurant_id', (req, res) => {
 })
 
 //修改餐廳資訊
-router.get('/:restaurant_id/edit', (req, res) => {
-  const restaurant_id = req.params.restaurant_id
-  Restaurant.findById(restaurant_id)
+router.get('/:id/edit', (req, res) => {
+  const _id = req.params.id
+  const userId = req.user._id
+  Restaurant.findOne({ _id, userId})
     .lean()
     .then((restaurant) => {
       res.render('edit', { restaurant })
@@ -46,12 +47,12 @@ router.get('/:restaurant_id/edit', (req, res) => {
       console.log(error)
     })
 })
-router.put('/:restaurant_id', (req, res) => {
-  const restaurant_id = req.params.restaurant_id
+router.put('/:id', (req, res) => {
+  const _id = req.params.id
   const userId = req.user._id
   //解構賦值
   const { name, name_en, category, image, location, phone, google_map, rating, description } = req.body
-  Restaurant.findOne({ restaurant_id, userId} )
+  Restaurant.findOne({ _id, userId} )
     .then(restaurant => {
       restaurant.name = name
       restaurant.name_en = name_en
@@ -65,7 +66,7 @@ router.put('/:restaurant_id', (req, res) => {
       return restaurant.save()
     })
     .then(() => {
-      res.redirect(`/restaurants/${restaurant_id}`)
+      res.redirect(`/restaurants/${_id}`)
     })
     .catch(error => {
       console.log(error)
@@ -74,20 +75,24 @@ router.put('/:restaurant_id', (req, res) => {
 
 
 //刪除餐廳資料
-router.delete('/:restaurant_id', (req, res) => {
-  const restaurant_id = req.params.restaurant_id
+router.delete('/:id', (req, res) => {
+  const _id = req.params.id
   const userId = req.user._id
-  return Restaurant.findOne({ restaurant_id, userId })
-    .then(restaurant => {
-      restaurant.remove()
-    })
-    .then(() => {
-      res.redirect('/')
-    })
-    .catch(error => {
-      console.log(error)
-    })
+  return Restaurant.findOne({ _id, userId })
+    .then(restaurant => restaurant.remove())
+    .then(() => res.redirect('/'))
+    .catch(error => console.log(error))
 })
+
+
+// router.delete('/:restaurant_id', (req, res) => {
+//   const restaurant_id = req.params.restaurant_id
+//   const userId = req.user._id
+//   return Restaurant.findOne({ restaurant_id, userId })
+//     .then(restaurant => restaurant.remove())
+//     .then(() => res.redirect('/'))
+//     .catch(error => console.log(error))
+// })
 
 //匯出
 module.exports = router

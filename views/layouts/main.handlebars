@@ -14,15 +14,20 @@
     <!-- navigation -->
     <nav class="navbar navbar-light bg-light">
       <div class="container">
-        {{#if isAuthenticated}}<h6>Hello {{ user.name}},</h6> {{/if}}
         {{#if isAuthenticated}}
-        <a class="navbar-brand" href="/">
-          <img src="https://assets-lighthouse.s3.amazonaws.com/uploads/image/file/6227/restaurant-list-logo.png" width="30"
-            height="30" class="d-inline-block align-top" alt="我的餐廳清單">
-          我的餐廳清單
-        </a>
+          <div class='col-1'>
+            <a class="navbar-brand" href="/">
+              <img src="https://assets-lighthouse.s3.amazonaws.com/uploads/image/file/6227/restaurant-list-logo.png" width="30"height="30" class="d-inline-block align-top" alt="我的餐廳清單">我的餐廳清單
+            </a>
+          </div>
+          <div class="col-8 mt-2">
+            {{#if isAuthenticated}}<h6>Hello {{ user.name}},</h6> {{/if}}
+          </div>
+          <div class='col-1'>
+            <a href="/users/logout" class="btn btn-outline-success btn-sm">Logout</a>
+          </div>
         {{else}}
-        <a href="/users/login" class="btn btn-outline-light">Login</a>
+          <a href="/users/login" class="btn btn-outline-light">Login</a>
         {{/if}}
       </div>
   
