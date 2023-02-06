@@ -3,7 +3,7 @@
 ## 功能
 - 使用者可以註冊帳號，註冊的資料包括：名字、email、密碼。
 
-- 使用者也可以透過 Facebook Login 直接登入。
+- 使用者也可以透過使用 Facebook 帳號登入。
 
 - 使用者登入後可在首頁看到所有餐廳與它們的簡單資料，包含：
   * 餐廳照片
@@ -40,7 +40,7 @@
 - Passport-Facebook
 
 ## 開始使用
-- clone專案至本機電腦
+- clone專案至電腦
 - 進入專案資料夾
 - 專案下載完成後輸入：npm install
 - 安裝完成後接續安裝Express, Express-handlebars......等

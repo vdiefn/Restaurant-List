@@ -62,7 +62,7 @@ db.once('open', () => {
         })
         .catch(err => console.log(err))
         .then(() => {
-          console.log('done')
+          console.log('Demo seeder done!e')
           process.exit()
         })
     })
