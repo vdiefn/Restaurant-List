@@ -9,9 +9,10 @@ router.get('/login', (req, res) => {
   res.render('login')
 })
 
-router.post('/login', passport.authenticate('local', {
+router.post('/login', passport.authenticate('local', { 
   successRedirect: '/',
-  failureRedirect: '/users/login'
+  failureRedirect: '/users/login',
+  failureMessage: true
 }))
 
 //註冊
